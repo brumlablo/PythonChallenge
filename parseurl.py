@@ -9,6 +9,15 @@ def readIt(url):
     return comments
 
 
+def shiftalpha(toDec):
+    out = ""
+    for ch in toDec:
+        if "a" <= ch <= "z":
+            out += chr(((ord(ch) + 2) - ord("a")) % 26 + ord("a"))
+        else:
+            out += ch
+    print(out)
+
 def countrare(todec):
     # count the occurence of characters in string
     rarity = {}
@@ -41,6 +50,7 @@ def findnumber(url):
     html = urllib.request.urlopen(url).read().decode()
     found = re.search('([0-9]+)$', html)
     if found is None:
+        #print(html + " a jsme tu: " + url)
         # divide by 2
         todiv = re.search('.*=([0-9]+)$', url)
         if todiv is not None and html == "Yes. Divide by two and keep going.":
@@ -60,6 +70,7 @@ def numberz(url):
     while True:
         # get number of new url from html
         foundNext = findnumber(url)
+        #print(foundNext)
         try:
             float(foundNext)
         except ValueError:
