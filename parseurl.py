@@ -1,10 +1,15 @@
 import urllib.request
 import re
-
+import pickle
+import zipfile
 
 def readIt(url):
-    # get tyhe url comments
+    # get the url comments
     html = urllib.request.urlopen(url).read().decode()
+    return html
+
+
+def analyseComments(html):
     comments = re.findall("<!--(.*)-->", html, re.DOTALL)
     return comments
 
@@ -17,6 +22,7 @@ def shiftalpha(toDec):
         else:
             out += ch
     print(out)
+
 
 def countrare(todec):
     # count the occurence of characters in string
@@ -50,7 +56,7 @@ def findnumber(url):
     html = urllib.request.urlopen(url).read().decode()
     found = re.search('([0-9]+)$', html)
     if found is None:
-        #print(html + " a jsme tu: " + url)
+        # print(html + " a jsme tu: " + url)
         # divide by 2
         todiv = re.search('.*=([0-9]+)$', url)
         if todiv is not None and html == "Yes. Divide by two and keep going.":
@@ -70,7 +76,7 @@ def numberz(url):
     while True:
         # get number of new url from html
         foundNext = findnumber(url)
-        #print(foundNext)
+        print(foundNext)
         try:
             float(foundNext)
         except ValueError:
@@ -78,3 +84,30 @@ def numberz(url):
         # form new url
         url = urlgroups[1] + foundNext
     print(foundNext)
+
+
+def deserialize(url):
+    res = ""
+    html = pickle.load(urllib.request.urlopen(url))
+    for item in html:
+        for val, count in item:
+            res += str(val) * count
+        res += "\n"
+    print(res)
+
+def openzip(zip_name):
+    if not zipfile.is_zipfile(zip_name):
+        raise ValueError('Could not read zip file: ' + zip_name)
+    zf = zipfile.ZipFile(zip_name, 'r')
+    hint = '90052'
+    res = ""
+    while 42:
+        data = zf.read(hint + ".txt").decode("utf-8")
+        res += zf.getinfo(hint + ".txt").comment.decode("utf-8")
+        found = re.search('([0-9]+)$', data)
+        if found is None:
+            break
+        else:
+            hint = found[0]
+    print(res)
+    zf.close()

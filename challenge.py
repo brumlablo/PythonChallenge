@@ -1,27 +1,33 @@
 import parseurl
-import re
 
-
-def cha1():
+def cha0():
     print(2 ** 38)
 
 
-def cha2():
+def cha1():
     parseurl.shiftalpha("g fmn3c wms bgblr rpylqjyrc gr zw fylb. rfyrq ufyr amknsrcpq ypc dmp. bmgle gr gl zw "
                               "fylb gq glcddgagclr ylb rfyr'q ufw rfgq rcvr gq qm jmle. sqgle qrpgle.kyicrpylq() gq "
                               "pcamkkclbcb. lmu ynnjw ml rfc spj.")
     parseurl.shiftalpha("map")
 
-def cha3():
-    comments = parseurl.readIt("http://www.pythonchallenge.com/pc/def/ocr.html")
+def cha2():
+    html = parseurl.readIt("http://www.pythonchallenge.com/pc/def/ocr.html")
+    comments = parseurl.analyseComments(html)
     parseurl.countrare(comments[0][50:]) #todo: fix this piggy thingy
 
+def cha3():
+    html = parseurl.readIt("http://www.pythonchallenge.com/pc/def/equality.html")
+    comments = parseurl.analyseComments(html)
+    parseurl.find3(comments[0])
+
 def cha4():
-    comments = parseurl.readIt("http://www.pythonchallenge.com/pc/def/equality.html")
-    result = parseurl.find3(comments[0])
+    parseurl.numberz("http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing=12345")
 
 def cha5():
-    parseurl.numberz("http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing=12345")
+    parseurl.deserialize("http://www.pythonchallenge.com/pc/def/banner.p")
+
+def cha6():
+    parseurl.openzip("./channel.zip")
 
 def runFunc(ch_n):
     # call chosen challenge
@@ -31,13 +37,13 @@ def main():
 
     #input jungle
     while(True):
-        ch_n = input("challenge number? [1-33] or run all [ALL/all] or quit program [Q/q]?\n")
+        ch_n = input("challenge number? [0-33] or run all [ALL/all] or quit program [Q/q]?\n")
 
         if ch_n == "q" or ch_n == "Q":
             exit(0)
         #run all
         elif ch_n == "ALL" or ch_n == "all":
-            i = 1
+            i = 0
             while True:
                 try:
                     func = runFunc(str(i))
@@ -60,6 +66,7 @@ def main():
                     func = runFunc(ch_n)
                 except KeyError:
                     print("There is no such function! I'm working on it :)...")
+
                 else:
                     func()
                     print("---------------------------------------------------------")
